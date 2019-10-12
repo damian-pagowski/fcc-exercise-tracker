@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Exercise Tracker</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/public/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center my-3">Exercise Tracker</h1>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Add User</h4>
+
+              <!-- add user -->
+              <form
+                class="form-inline"
+                id="formAddUser"
+                action="/api/exercise/users"
+                method="POST"
+              >
+                <div class="form-group mb-2">
+                  <label for="username" class="sr-only">Username</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    placeholder="Username"
+                    name="username"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary mb-2 ml-3">
+                  Create user
+                </button>
+              </form>
+            </div>
+          </div>
+          <!-- textarea -->
+          <div class="form-group mt-4">
+            <textarea class="form-control" rows="10" id="response"></textarea>
+          </div>
+          <!--  -->
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Log Exercise</h4>
+              <!-- add exercise -->
+              <form action="/api/exercise/add" method="POST">
+                <div class="form-group">
+                  <label for="userId">User ID</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="userId"
+                    name="userId"
+                    placeholder="User ID"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="description"
+                    id="description"
+                    placeholder="Description"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="duration">Duration</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="duration"
+                    name="duration"
+                    placeholder="Duration"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="date">Date</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="date"
+                    name="date"
+                  />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      [0, 1].forEach(
+        e =>
+          (document.forms[e].onsubmit = function(event) {
+            event.preventDefault();
+            const params = new URLSearchParams([
+              ...new FormData(event.target).entries(),
+            ]);
+            fetch(event.target.action, {
+              method: "POST",
+              body: params,
+            })
+              .then(resp => resp.json())
+              .then(
+                r =>
+                  (document.getElementById("response").value = JSON.stringify(
+                    r
+                  ))
+              );
+          })
+      );
+    </script>
+  </body>
+</html>
