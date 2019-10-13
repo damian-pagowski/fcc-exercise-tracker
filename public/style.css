@@ -1,0 +1,8 @@
+.col-stretch-content{
+    display: flex;
+    align-items: stretch;
+    justify-items: stretch;
+}
+.my-card{
+    width: 100%;
+}

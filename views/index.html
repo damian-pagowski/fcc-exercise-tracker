@@ -15,14 +15,12 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="text-center my-3">Exercise Tracker</h1>
+      <h1 class="text-center my-3 ">Exercise Tracker</h1>
       <div class="row">
         <div class="col">
-          <div class="card">
+          <div class="card mb-2">
             <div class="card-body">
               <h4 class="card-title">Add User</h4>
-
-              <!-- add user -->
               <form
                 class="form-inline"
                 id="formAddUser"
@@ -45,17 +43,9 @@
               </form>
             </div>
           </div>
-          <!-- textarea -->
-          <div class="form-group mt-4">
-            <textarea class="form-control" rows="10" id="response"></textarea>
-          </div>
-          <!--  -->
-        </div>
-        <div class="col">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Log Exercise</h4>
-              <!-- add exercise -->
               <form action="/api/exercise/add" method="POST">
                 <div class="form-group">
                   <label for="userId">User ID</label>
@@ -97,25 +87,91 @@
                   />
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">
+                  Submit Log
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col col-stretch-content">
+          <div class="card my-card">
+            <div class="card-body">
+              <h4 class="card-title">Show Exercise Log</h4>
+              <form
+                action="/api/exercise/log"
+                method="GET"
+                id="formExerciseLog"
+              >
+                <div class="form-group">
+                  <label for="userId">User ID</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="userId"
+                    name="userId"
+                    placeholder="User ID"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="from">From</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    name="from"
+                    id="from"
+                    placeholder="from"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="to">To</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="to"
+                    name="to"
+                    placeholder="to"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="limit">Limit</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="limit"
+                    name="limit"
+                  />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Get Log</button>
               </form>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="form-group mt-2">
+        <textarea class="form-control" rows="10" id="response"></textarea>
+      </div>
     </div>
     <script>
-      [0, 1].forEach(
+      [0, 1, 2].forEach(
         e =>
           (document.forms[e].onsubmit = function(event) {
             event.preventDefault();
             const params = new URLSearchParams([
               ...new FormData(event.target).entries(),
             ]);
-            fetch(event.target.action, {
-              method: "POST",
-              body: params,
-            })
+            const configObj = {
+              method: event.target.method,
+            };
+            let url = event.target.action;
+            if (configObj.method.toLowerCase() === "post") {
+              configObj.body = params;
+            } else {
+              url += "?" + params;
+            }
+            fetch(url, configObj)
               .then(resp => resp.json())
               .then(
                 r =>

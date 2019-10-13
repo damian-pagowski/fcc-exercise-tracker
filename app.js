@@ -46,6 +46,7 @@ app.get('/api/exercise/log', (req, res) => {
   const from = new Date(req.query.from)
   const to = new Date(req.query.to)
   const limit = parseInt(req.query.limit)
+  res.json({userId, from, to, limit})
   //
 })
 
