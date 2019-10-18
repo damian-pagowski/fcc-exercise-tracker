@@ -7,7 +7,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.set('view engine', 'ejs')
 const port = process.env.PORT || 5000
-
+const helmet = require('helmet')
+app.use(helmet())
 const exercises = require('./controllers/exercises')
 const users = require('./controllers/users')
 
